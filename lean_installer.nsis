@@ -1,0 +1,79 @@
+!define PRODUCT_NAME "Lean installer"
+!define PRODUCT_VERSION "1.0"
+!define PRODUCT_PUBLISHER "Neil Strickland"
+ 
+SetCompressor lzma
+ 
+; MUI 1.67 compatible ------
+!include "MUI.nsh"
+!include 'LogicLib.nsh'
+ 
+; MUI Settings
+!define MUI_ABORTWARNING
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+
+; Welcome page
+!define MUI_WELCOMEPAGE_TEXT "This will install the Lean proof assistant + supporting things: Git, VS Code with the Lean extension, mathlib, some minimal examples.  The installer is not yet very polished.  "
+!insertmacro MUI_PAGE_WELCOME
+; Components page
+!insertmacro MUI_PAGE_COMPONENTS
+; Instfiles page
+!insertmacro MUI_PAGE_INSTFILES
+; Finish page
+!define MUI_FINISHPAGE_TEXT "If all has gone to plan, the Sandbox directory should now be open in Visual Studio Code.  You should be able to click on the src subdirectory where you will find Lean files named hello_world.lean, examples.lean and primes.lean.  You should be able to get started by looking at these.  "
+!insertmacro MUI_PAGE_FINISH
+ 
+; Language files
+!insertmacro MUI_LANGUAGE "English"
+ 
+; Reserve files
+!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
+
+; MUI end ------
+ 
+Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+OutFile "lean_installer.exe"
+InstallDir "$PROGRAMFILES\Lean installer"
+ShowInstDetails show
+ 
+Section -SETTINGS
+  LogSet on
+  SetOutPath "$INSTDIR"
+  SetOverwrite ifnewer
+SectionEnd
+ 
+Section "Git for Windows" SEC01
+  LogSet on
+  File "git_installer.exe"
+  File "git_installer.inf"
+  ExecWait '"$INSTDIR\git_installer.exe" /LOADINF="git_installer.inf" /VERYSILENT'
+SectionEnd
+ 
+Section "Elan/Lean" SEC02
+  LogSet on
+  File "elan-init.exe"
+  ExecWait '"$INSTDIR\elan-init.exe" -y --default-toolchain=nightly'
+SectionEnd
+ 
+Section "Visual Studio Code" SEC03
+  LogSet on
+  File "vsc_installer.exe"
+  ExecWait '"$INSTDIR\vsc_installer.exe" /LOADINF="vsc_installer.inf" /VERYSILENT'
+SectionEnd
+
+Section "Lean VS Code extension" SEC04
+  LogSet on
+  ExecWait '"$PROGRAMFILES64\Microsoft VS Code\Code.exe" --install-extension jroesch.lean'
+SectionEnd
+
+Section "Sandbox" SEC05
+  LogSet on
+  File "create_sandbox.sh"
+  ExecWait '"$PROGRAMFILES64\Git\bin\bash.exe" create_sandbox.sh "$PROFILE"'
+  File "/oname=$PROFILE\Lean\Sandbox\src\hello_world.lean" "hello_world.lean"
+  File "/oname=$PROFILE\Lean\Sandbox\src\examples.lean" "examples.lean"
+  File "/oname=$PROFILE\Lean\Sandbox\src\primes.lean" "primes.lean"
+  Exec '"$PROGRAMFILES64\Microsoft VS Code\Code.exe" -r "$PROFILE\Lean\Sandbox"'
+SectionEnd
+
+

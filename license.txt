@@ -1,0 +1,16 @@
+This installer bundles together several other pieces of software, which all
+have their own license conditions.
+
+Git for windows is released under the GNU General Public License (v2),
+as stated at https://github.com/git-for-windows/git/blob/master/README.md
+
+The license terms for Visual Studio Code are specified at
+https://code.visualstudio.com/license
+
+Elan, Lean and mathlib are all released under the Apache license (v2),
+as stated at
+https://github.com/Kha/elan/blob/master/LICENSE
+https://github.com/leanprover/lean/blob/master/LICENSE
+https://github.com/leanprover/mathlib/blob/master/LICENSE
+
+Anything specific to this combined installer is in the public domain.

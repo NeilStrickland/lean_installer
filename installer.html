@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Lean installer</title>
+<style type="text/css" media="screen">
+  @import url(lean.css);
+</style>
+</head>
+<body >
+ <h1>Lean installer for Windows</h1>
+
+ From this page you can download a Windows installer that installs the
+ Lean proof assistant together with various other things that are
+ needed to use it effectively.
+ <br/>
+  <center style="font-size:30px">
+   <a href="lean_installer.exe">Download</a>
+  </center>
+ <br/>
+ In more detail, it attempts to do the following: 
+ <ul>
+  <li>Install Git for Windows.  (This is needed to install the
+  mathlib library, which is required for almost any serious project.
+  Most other Lean libraries are also distributed using Git.)</li>
+  <li>Install Elan and Lean.  (Elan is a system whose main purpose is
+  to manage multiple projects that might need different versions of
+  Lean and/or mathlib, but in fact it is convenient even if you only
+  have one version.) 
+  </li>
+  <li>Install VS Code.  (This is an editor/developement
+  environment with intelligent support for software development in a
+   wide range of languages.) </li>
+  <li>Install the Lean extension for VS Code.  (This allows us to
+  write proofs in VS Code and get Lean to check them in real time.)
+  </li>
+  <li>Set up a project folder containing some sample files together
+  with a copy of mathlib.  For a user named Alice, this project folder
+  will be C:\Users\Alice\Lean\Sandbox, with the sample files in
+  Sandbox\src and the library in Sandbox\_target\deps\mathlib. 
+  </li>
+  <li>Start up VS Code, and open the project folder.
+  </li>
+ </ul>
+ <br/><br/>
+ This is a very preliminary version of an installer.  Some potential
+ issues are as follows:
+ <ul>
+  <li>
+   There is not much error-checking, and not many configuration
+   options. 
+  </li>
+  <li>
+   We install the system version of VS Code in C:\Program Files.  For
+   some reason, the VS Code developers encourage people to install the
+   user version in C:\Users\Alice\AppData\Local\Programs instead, even
+   though that is not at all standard for other applications of
+   similar type.  We need privilege escalation in order to install
+   Git, and that creates problems with the user version of VS Code, so
+   we have chosen the system version instead.
+  </li>
+  <li>
+   VS Code wants to open itself after it has installed.  We do not
+   want it to open until we have installed the Lean extension and the
+   sample files.  The installer configuration is supposed to sort this
+   out, but it does not seem to work consistently.
+  </li>
+  <li>
+   We have not yet arranged for the user to see or accept license
+   information. 
+  </li>
+ </ul>
+</body>
+</html>
